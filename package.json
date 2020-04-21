@@ -1,0 +1,20 @@
+{
+  "name": "friends",
+  "version": "1.0.0",
+  "description": "non commercial social network for portfolio",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js", 
+    "server": "nodemon app.js"
+  },
+  "author": "Ilyin Sergei <sergei94.iliyn@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.10"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "nodemon": "^2.0.3"
+  }
+}
