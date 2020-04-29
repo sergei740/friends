@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  margin-right: 20px;
+  color: #ffffff;
+  align-items: center;
+}
+
+.photoBlock {
+  width: 45px;
+  height: 45px;
+  border-radius: 50px;
+  margin-right: 20px;
+}

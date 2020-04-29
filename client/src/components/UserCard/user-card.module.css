@@ -1,0 +1,67 @@
+.userCard {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid transparent;
+  border-radius: 25px;
+  margin: 0px auto 25px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 0px 2px 0px rgba(255, 255, 255, 1);
+}
+
+.flexContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userCard:hover {
+  box-shadow: 0px 0px 2px 0px rgba(0, 123, 255, 1);
+}
+
+.buttonsContainer {
+  margin-right: 10px;
+}
+
+.photo {
+  width: 65px;
+  height: 65px;
+  border-radius: 50px;
+  margin-right: 20px;
+}
+
+.name {
+  color: #ffffff;
+  font-size: 28px;
+  text-align: left;
+}
+
+.friend {
+  color: #aef6ff;
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+/*Media Queries*/
+@media only screen and (max-width: 600px) {
+  .userCard {
+    padding: 10px;
+  }
+
+  .photo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .name {
+    font-size: 22px;
+  }
+
+  .friend {
+    font-size: 14px;
+    margin-right: 10px;
+  }
+}

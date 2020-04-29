@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import styles from "./start-page.module.css";
 import { RegistrationFormComponent } from "../../components/RegistrationFormComponent/RegistrationFormComponent";
 import { SignInFormComponent } from "../../components/SignInFormComponent/SignInFormComponent";
 import { StartPageComponent } from "../../components/StartPageComponent/StartPageComponent";

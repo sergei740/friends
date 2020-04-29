@@ -4,16 +4,32 @@ import { Context } from "../../context/Context";
 import { TextField } from "../TextField/TextField";
 
 export const SignInFormComponent = () => {
-  const { changeComponentName } = useContext(Context);
+  const { changeComponentName, signInForm, handleSignInForm, submitSignInForm } = useContext(
+    Context
+  );
 
   return (
     <div className={styles.mainContainer}>
-      <form className={styles.formStyle}>
-        <TextField type="text" placeholder="type your login" />
-        <TextField type="password" placeholder="type your password" />
+      <form className={styles.formStyle} onSubmit={submitSignInForm}>
+        <TextField
+          type="email"
+          name="email"
+          placeholder="type your email"
+          value={signInForm.email}
+          onChange={handleSignInForm}
+        />
+        <TextField
+          type="password"
+          name="password"
+          placeholder="type your password"
+          value={signInForm.password}
+          onChange={handleSignInForm}
+        />
         <div className={styles.buttonContainer}>
-          <button className="btn btn-outline-primary">SIGN IN</button>
-          <button className="btn btn-outline-danger" onClick={changeComponentName}>
+          <button className="btn btn-outline-primary" type="submit">
+            SIGN IN
+          </button>
+          <button className="btn btn-outline-danger" type="button" onClick={changeComponentName}>
             GO BACK
           </button>
         </div>
