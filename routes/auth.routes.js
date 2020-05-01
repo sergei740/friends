@@ -10,9 +10,10 @@ const router = Router();
 router.post(
   "/register",
   [
-    check("name", "Имя должно содержать более 2 букв").isLength({ min: 2 }),
-    check("email", "Неккоректный email").isEmail(),
-    check("password", "Минимальная длина пароля 6 символов").isLength({ min: 6 }),
+    check("name", "Name must contain more than 2 chars").isLength({ min: 2 }),
+    check("email", "Incorrect email").isEmail(),
+    check("login").isLength({ min: 6 }),
+    check("password", "Minimal passsword length 6 chars").isLength({ min: 6 }),
   ],
   async (req, res) => {
     try {
@@ -21,7 +22,7 @@ router.post(
       if (!errors.isEmpty()) {
         return res
           .status(400)
-          .json({ errors: errors.array(), message: "Некореектные данные при регистрации" });
+          .json({ error: errors.array(), message: "Incorrect data during registration" });
       }
 
       const { name, email, login, password } = req.body;
@@ -29,7 +30,7 @@ router.post(
       const candidate = await User.findOne({ email });
 
       if (candidate) {
-        return res.status(400).json({ message: "This user already exists" });
+        return res.status(400).json({ message: "This user already exists", error: "error" });
       }
 
       const hashedPassword = await bcrypt.hash(password, 12);
@@ -57,8 +58,8 @@ router.post(
 router.post(
   "/login",
   [
-    check("email", "Введите корректный email").normalizeEmail().isEmail(),
-    check("password", "Введите пароль").exists(),
+    check("email", "Please, enter a valid email").normalizeEmail().isEmail(),
+    check("password", "Please, enter a password").exists(),
   ],
   async (req, res) => {
     try {
@@ -67,7 +68,7 @@ router.post(
       if (!errors.isEmpty()) {
         return res
           .status(400)
-          .json({ errors: errors.array(), message: "Некореектные данные при входе в систему" });
+          .json({ error: errors.array(), message: "Incorrect data during registration" });
       }
 
       const { email, password } = req.body;
@@ -75,13 +76,13 @@ router.post(
       const user = await User.findOne({ email });
 
       if (!user) {
-        return res.status(400).json({ message: "Пользователь не найден" });
+        return res.status(400).json({ message: "User not found", error: "error" });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        return res.status(400).json({ message: "Неверный пароль, попробуйте снова" });
+        return res.status(400).json({ message: "Wrong password, try again", error: "error" });
       }
 
       const token = jwt.sign({ userId: user.id }, config.get("jwtSecret"), { expiresIn: "1h" });

@@ -19,11 +19,12 @@ function App() {
     email: "",
     password: "",
   });
-  const [submitFormMessage, setSubmitFormMessage] = useState("");
+  const [submitFormData, setSubmitFormData] = useState({});
   const [users, setUsers] = useState([]);
   const authorizedUserId = JSON.parse(localStorage.getItem("id"));
 
   const changeComponentName = (e) => {
+    setSubmitFormData({});
     if (e.target.name) {
       setComponentName(e.target.name);
     } else {
@@ -33,18 +34,19 @@ function App() {
 
   const handleRegistrationForm = (e) => {
     setRegistrationForm({ ...registrationForm, [e.target.name]: e.target.value });
+    setSubmitFormData({});
   };
 
   const submitRegistrationForm = async (e) => {
     e.preventDefault();
-    const { name, email, login, password } = registrationForm;
-    if (name && email && login && password) {
-      const data = await request("/api/auth/register", "POST", { ...registrationForm });
-      setSubmitFormMessage(data);
-      console.log(data);
-    } else {
-      console.log("some inputs are clear");
+
+    const data = await request("/api/auth/register", "POST", { ...registrationForm });
+    setSubmitFormData({});
+    if (!data.error) {
+      setSubmitFormData(data);
+      setRegistrationForm({ name: "", email: "", login: "", password: "" });
     }
+    setSubmitFormData(data);
   };
 
   const handleSignInForm = (e) => {
@@ -53,19 +55,16 @@ function App() {
 
   const submitSignInForm = async (e) => {
     e.preventDefault();
-    const { email, password } = signInForm;
-    if (email && password) {
-      const data = await request("/api/auth/login", "POST", { ...signInForm });
-      if (data.token) {
-        localStorage.setItem("token", JSON.stringify(data.token));
-        localStorage.setItem("id", JSON.stringify(data.userId));
-        setToken(data.token);
-        setSignInForm({ email: "", password: "" });
-      }
-      console.log(data);
-    } else {
-      console.log("some inputs are clear");
+
+    const data = await request("/api/auth/login", "POST", { ...signInForm });
+    setSubmitFormData({});
+    if (data.token) {
+      localStorage.setItem("token", JSON.stringify(data.token));
+      localStorage.setItem("id", JSON.stringify(data.userId));
+      setToken(data.token);
+      setSignInForm({ email: "", password: "" });
     }
+    setSubmitFormData(data);
   };
 
   const logOut = () => {
@@ -76,9 +75,7 @@ function App() {
 
   const getUsers = async () => {
     const data = await request("/api/users/users", "GET");
-    const usersByAuthorizedUserId = await data.users.filter(
-      (user) => user._id !== authorizedUserId
-    );
+    const usersByAuthorizedUserId = data.users.filter((user) => user._id !== authorizedUserId);
     setUsers(usersByAuthorizedUserId);
   };
 
@@ -138,7 +135,7 @@ function App() {
         handleSignInForm,
         submitSignInForm,
         loading,
-        submitFormMessage,
+        submitFormData,
         logOut,
         sendFriendRequest,
         cancelFriendRequest,

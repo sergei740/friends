@@ -12,7 +12,7 @@ export const Context = createContext({
   handleSignInForm: noop,
   submitSignInForm: noop,
   loading: false,
-  submitFormMessage: {},
+  submitFormData: {},
   logOut: noop,
   sendFriendRequest: noop,
   cancelFriendRequest: noop,
