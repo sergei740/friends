@@ -4,9 +4,13 @@ import _ from "lodash";
 import { Context } from "../../context/Context";
 
 export const UserCard = (props) => {
-  const { sendFriendRequest, cancelFriendRequest, acceptFriendRequest, deleteFriend } = useContext(
-    Context
-  );
+  const {
+    sendFriendRequest,
+    cancelFriendRequest,
+    acceptFriendRequest,
+    rejectFriendRequest,
+    deleteFriend,
+  } = useContext(Context);
   const { authorizedUserId } = props;
   const {
     _id,
@@ -36,7 +40,11 @@ export const UserCard = (props) => {
             >
               ACCEPT
             </button>
-            <button className="btn btn-outline-danger" type="button">
+            <button
+              className="btn btn-outline-danger"
+              type="button"
+              onClick={() => rejectFriendRequest(authorizedUserId, _id)}
+            >
               REJECT
             </button>
           </div>

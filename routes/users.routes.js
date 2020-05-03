@@ -20,7 +20,10 @@ router.post("/sendFriendRequest", async (req, res) => {
     const authorizedUser = await User.findById(authorizedUserId);
     const friendCandidate = await User.findById(friendCandidateId);
 
-    if (!authorizedUser.outgoingFriendRequestsList.includes(friendCandidateId)) {
+    if (
+      !authorizedUser.outgoingFriendRequestsList.includes(friendCandidateId) &&
+      !authorizedUser.friendList.includes(friendCandidateId)
+    ) {
       await authorizedUser.updateOne({
         outgoingFriendRequestsList: [
           ...authorizedUser.outgoingFriendRequestsList,
@@ -29,7 +32,10 @@ router.post("/sendFriendRequest", async (req, res) => {
       });
     }
 
-    if (!friendCandidate.incomingFriendRequestsList.includes(authorizedUserId)) {
+    if (
+      !friendCandidate.incomingFriendRequestsList.includes(authorizedUserId) &&
+      !friendCandidate.friendList.includes(authorizedUserId)
+    ) {
       await friendCandidate.updateOne({
         incomingFriendRequestsList: [
           ...friendCandidate.incomingFriendRequestsList,
@@ -106,6 +112,34 @@ router.post("/acceptFriendRequest", async (req, res) => {
     }
 
     res.status(200).json({ message: "Now you are friends" });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong, try it again" });
+  }
+});
+
+// /api/users/rejectFriendRequest
+router.post("/rejectFriendRequest", async (req, res) => {
+  try {
+    const { authorizedUserId, friendCandidateId } = req.body;
+
+    const authorizedUser = await User.findById(authorizedUserId);
+    const friendCandidate = await User.findById(friendCandidateId);
+
+    if (authorizedUser.incomingFriendRequestsList.includes(friendCandidateId)) {
+      await authorizedUser.updateOne({
+        incomingFriendRequestsList: [
+          ...incomingFriendRequestsList.filter((id) => id !== friendCandidateId),
+        ],
+      });
+    }
+
+    if (friendCandidate.outgoingFriendRequestsList.includes(authorizedUserId)) {
+      await friendCandidate.updateOne({
+        outgoingFriendRequestsList: [
+          ...outgoingFriendRequestsList.filter((id) => id !== friendCandidateId),
+        ],
+      });
+    }
   } catch (error) {
     res.status(500).json({ message: "Something went wrong, try it again" });
   }

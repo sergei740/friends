@@ -17,6 +17,7 @@ export const Context = createContext({
   sendFriendRequest: noop,
   cancelFriendRequest: noop,
   acceptFriendRequest: noop,
+  rejectFriendRequest: noop,
   deleteFriend: noop,
   authorizedUserId: "",
   users: [],

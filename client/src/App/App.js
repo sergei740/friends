@@ -106,6 +106,14 @@ function App() {
     getUsers();
   };
 
+  const rejectFriendRequest = async (authorizedUserId, friendCandidateId) => {
+    await request("/api/users/rejectFriendRequest", "POST", {
+      authorizedUserId,
+      friendCandidateId,
+    });
+    getUsers();
+  };
+
   const deleteFriend = async (authorizedUserId, friendId) => {
     await request("/api/users/deleteFriend", "POST", {
       authorizedUserId,
@@ -143,6 +151,7 @@ function App() {
         sendFriendRequest,
         cancelFriendRequest,
         acceptFriendRequest,
+        rejectFriendRequest,
         deleteFriend,
         authorizedUserId,
         users,
