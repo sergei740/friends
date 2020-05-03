@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Context } from "../context/Context";
 import { useHttp } from "../hooks/http.hook";
 import { useRoutes } from "../routes/routes";
+import _ from "lodash";
 
 function App() {
   const [token, setToken] = useState(null);
@@ -21,6 +22,7 @@ function App() {
   });
   const [submitFormData, setSubmitFormData] = useState({});
   const [users, setUsers] = useState([]);
+  const [authorizedUser, setAuthorizedUser] = useState({});
   const authorizedUserId = JSON.parse(localStorage.getItem("id"));
 
   const changeComponentName = (e) => {
@@ -73,58 +75,59 @@ function App() {
   const logOut = () => {
     localStorage.clear();
     setToken(null);
+    setAuthorizedUser({});
     setComponentName("");
   };
 
   const getUsers = async () => {
     const data = await request("/api/users/users", "GET");
     const usersByAuthorizedUserId = data.users.filter((user) => user._id !== authorizedUserId);
+    if (_.isEmpty(authorizedUser)) {
+      const authUserByAuthorizedUserId = data.users.find((user) => user._id === authorizedUserId);
+      setAuthorizedUser(authUserByAuthorizedUserId);
+    }
     setUsers(usersByAuthorizedUserId);
   };
 
   const sendFriendRequest = async (authorizedUserId, friendCandidateId) => {
-    await request("/api/users/sendFriendRequest", "POST", {
+    const data = await request("/api/users/sendFriendRequest", "POST", {
       authorizedUserId,
       friendCandidateId,
     });
-    getUsers();
+    setUsers(data.users);
   };
 
   const cancelFriendRequest = async (authorizedUserId, friendCandidateId) => {
-    await request("/api/users/cancelSendFriendRequest", "POST", {
+    const data = await request("/api/users/cancelSendFriendRequest", "POST", {
       authorizedUserId,
       friendCandidateId,
     });
-    getUsers();
+    setUsers(data.users);
   };
 
   const acceptFriendRequest = async (authorizedUserId, friendCandidateId) => {
-    await request("/api/users/acceptFriendRequest", "POST", {
+    const data = await request("/api/users/acceptFriendRequest", "POST", {
       authorizedUserId,
       friendCandidateId,
     });
-    getUsers();
+    setUsers(data.users);
   };
 
   const rejectFriendRequest = async (authorizedUserId, friendCandidateId) => {
-    await request("/api/users/rejectFriendRequest", "POST", {
+    const data = await request("/api/users/rejectFriendRequest", "POST", {
       authorizedUserId,
       friendCandidateId,
     });
-    getUsers();
+    setUsers(data.users);
   };
 
   const deleteFriend = async (authorizedUserId, friendId) => {
-    await request("/api/users/deleteFriend", "POST", {
+    const data = await request("/api/users/deleteFriend", "POST", {
       authorizedUserId,
       friendId,
     });
-    getUsers();
+    setUsers(data.users);
   };
-
-  useEffect(() => {
-    getUsers();
-  }, []);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -156,6 +159,7 @@ function App() {
         authorizedUserId,
         users,
         getUsers,
+        authorizedUser,
       }}
     >
       <Router>{routes}</Router>

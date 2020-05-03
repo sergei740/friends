@@ -22,4 +22,5 @@ export const Context = createContext({
   authorizedUserId: "",
   users: [],
   getUsers: noop,
+  setNavBarInfo: noop,
 });

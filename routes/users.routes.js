@@ -44,7 +44,9 @@ router.post("/sendFriendRequest", async (req, res) => {
       });
     }
 
-    res.status(200).json({ message: "Friend request has been send" });
+    const allUsers = await User.find({ _id: { $nin: authorizedUserId } });
+
+    res.status(200).json({ message: "Friend request has been send", users: allUsers });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong, try it again" });
   }
@@ -74,7 +76,9 @@ router.post("/cancelSendFriendRequest", async (req, res) => {
       });
     }
 
-    res.status(200).json({ message: "Request canceled" });
+    const allUsers = await User.find({ _id: { $nin: authorizedUserId } });
+
+    res.status(200).json({ message: "Request canceled", users: allUsers });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong, try it again" });
   }
@@ -90,8 +94,8 @@ router.post("/acceptFriendRequest", async (req, res) => {
 
     if (authorizedUser.incomingFriendRequestsList.includes(friendCandidateId)) {
       await authorizedUser.updateOne({
-        outgoingFriendRequestsList: [
-          ...authorizedUser.outgoingFriendRequestsList.filter((id) => id !== friendCandidateId),
+        incomingFriendRequestsList: [
+          ...authorizedUser.incomingFriendRequestsList.filter((id) => id !== friendCandidateId),
         ],
       });
 
@@ -102,8 +106,8 @@ router.post("/acceptFriendRequest", async (req, res) => {
 
     if (friendCandidate.outgoingFriendRequestsList.includes(authorizedUserId)) {
       await friendCandidate.updateOne({
-        incomingFriendRequestsList: [
-          ...friendCandidate.incomingFriendRequestsList.filter((id) => id !== authorizedUserId),
+        outgoingFriendRequestsList: [
+          ...friendCandidate.outgoingFriendRequestsList.filter((id) => id !== authorizedUserId),
         ],
       });
       await friendCandidate.updateOne({
@@ -111,7 +115,9 @@ router.post("/acceptFriendRequest", async (req, res) => {
       });
     }
 
-    res.status(200).json({ message: "Now you are friends" });
+    const allUsers = await User.find({ _id: { $nin: authorizedUserId } });
+
+    res.status(200).json({ message: "Now you are friends", users: allUsers });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong, try it again" });
   }
@@ -140,6 +146,10 @@ router.post("/rejectFriendRequest", async (req, res) => {
         ],
       });
     }
+
+    const allUsers = await User.find({ _id: { $nin: authorizedUserId } });
+
+    res.status(200).json({ message: "You rejected incoming friend request", users: allUsers });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong, try it again" });
   }
@@ -161,7 +171,9 @@ router.post("/deleteFriend", async (req, res) => {
       friendList: [...friend.friendList.filter((id) => id !== authorizedUserId)],
     });
 
-    res.status(200).json({ message: "Now you are not friends" });
+    const allUsers = await User.find({ _id: { $nin: authorizedUserId } });
+
+    res.status(200).json({ message: "Now you are not friends", users: allUsers });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong, try it again" });
   }

@@ -10,6 +10,7 @@ export const UserCard = (props) => {
     acceptFriendRequest,
     rejectFriendRequest,
     deleteFriend,
+    loading,
   } = useContext(Context);
   const { authorizedUserId } = props;
   const {
@@ -36,6 +37,7 @@ export const UserCard = (props) => {
               className="btn btn-outline-primary"
               type="button"
               style={{ marginRight: "10px" }}
+              disabled={loading}
               onClick={() => acceptFriendRequest(authorizedUserId, _id)}
             >
               ACCEPT
@@ -43,6 +45,7 @@ export const UserCard = (props) => {
             <button
               className="btn btn-outline-danger"
               type="button"
+              disabled={loading}
               onClick={() => rejectFriendRequest(authorizedUserId, _id)}
             >
               REJECT
@@ -53,6 +56,7 @@ export const UserCard = (props) => {
           <button
             className="btn btn-outline-primary"
             type="button"
+            disabled={loading}
             onClick={() => sendFriendRequest(authorizedUserId, _id)}
           >
             ADD FRIEND
@@ -64,6 +68,7 @@ export const UserCard = (props) => {
             <button
               className="btn btn-outline-danger"
               type="button"
+              disabled={loading}
               onClick={() => deleteFriend(authorizedUserId, _id)}
             >
               REMOVE FRIEND
@@ -76,6 +81,7 @@ export const UserCard = (props) => {
             <button
               className="btn btn-outline-danger"
               type="button"
+              disabled={loading}
               onClick={() => cancelFriendRequest(authorizedUserId, _id)}
             >
               CANCEL REQUEST

@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./user-info-component.module.css";
+import _ from "lodash";
 
 export const UserInfoComponent = (props) => {
   const { userName } = props;
@@ -9,7 +10,7 @@ export const UserInfoComponent = (props) => {
       <div>
         <img src="https://via.placeholder.com/65" className={styles.photoBlock} alt="" />
       </div>
-      <div>{userName}</div>
+      <div>{_.capitalize(userName)}</div>
     </div>
   );
 };

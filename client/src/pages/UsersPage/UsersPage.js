@@ -1,11 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styles from "./user-page.module.css";
 import { TextField } from "../../components/TextField/TextField";
 import { UserCard } from "../../components/UserCard/UserCard";
 import { Context } from "../../context/Context";
 
 export const UsersPage = () => {
-  const { users, authorizedUserId } = useContext(Context);
+  const { users, authorizedUserId, getUsers } = useContext(Context);
+
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   return (
     <div className={styles.container}>
