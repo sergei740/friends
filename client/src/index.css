@@ -3,6 +3,7 @@
 body {
   font-family: Barlow Condensed;
   background-color: #3b3b3e;
+  overflow: hidden;
 }
 
 p {

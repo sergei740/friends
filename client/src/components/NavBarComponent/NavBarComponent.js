@@ -9,7 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 export const NavBarComponent = () => {
   const { logOut, loading, authorizedUser } = useContext(Context);
   const { name } = authorizedUser;
-
+  
   const ColorLinearProgress = withStyles({
     root: {
       height: 3,
