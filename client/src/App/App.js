@@ -47,9 +47,6 @@ function App() {
     if (!data.error) {
       setSubmitFormData(data);
       setRegistrationForm({ name: "", email: "", login: "", password: "" });
-      setTimeout(() => {
-        setComponentName("");
-      }, 3000);
     }
     setSubmitFormData(data);
   };

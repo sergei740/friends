@@ -9,7 +9,8 @@
   text-transform: uppercase;
   font-family: Barlow Condensed;
   font-size: 1rem;
-  color: #4caf50;
+  color: #ffffff;
+  background-color: #4caf50;
   width: 300px;
   border-radius: 5px;
   font-weight: 400;
@@ -29,7 +30,8 @@
   text-transform: uppercase;
   font-family: Barlow Condensed;
   font-size: 1rem;
-  color: #dc3545;
+  color: #ffffff;
+  background-color: #dc3545;
   width: 300px;
   border-radius: 5px;
   font-weight: 400;
@@ -41,14 +43,14 @@
 
 .alertError:hover {
   cursor: pointer;
-  background-color: #dc3545;
-  color: white;
+  background-color: #ab2a37;
+  border-color: #ab2a37;
 }
 
 .alertSuccess:hover {
   cursor: pointer;
-  background-color: #4caf50;
-  color: white;
+  background-color: #3c883f;
+  border-color: #3c883f;
 }
 
 .hide {
