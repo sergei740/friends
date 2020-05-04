@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Context } from "../context/Context";
 import { useHttp } from "../hooks/http.hook";
@@ -53,6 +53,7 @@ function App() {
 
   const handleSignInForm = (e) => {
     setSignInForm({ ...signInForm, [e.target.name]: e.target.value });
+    setSubmitFormData({});
   };
 
   const submitSignInForm = async (e) => {
@@ -76,7 +77,7 @@ function App() {
     setComponentName("");
   };
 
-  const getUsers = async () => {
+  const getUsers = useCallback(async () => {
     const data = await request("/api/users/users", "GET");
     const usersByAuthorizedUserId = data.users.filter((user) => user._id !== authorizedUserId);
     if (_.isEmpty(authorizedUser)) {
@@ -84,7 +85,7 @@ function App() {
       setAuthorizedUser(authUserByAuthorizedUserId);
     }
     setUsers(usersByAuthorizedUserId);
-  };
+  }, [authorizedUserId, authorizedUser, request]);
 
   const sendFriendRequest = async (authorizedUserId, friendCandidateId) => {
     const data = await request("/api/users/sendFriendRequest", "POST", {

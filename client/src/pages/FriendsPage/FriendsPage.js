@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import styles from "./friends-page.module.css";
 import { Context } from "../../context/Context";
 import { UserCard } from "../../components/UserCard/UserCard";
@@ -9,18 +9,20 @@ export const FriendsPage = () => {
   const [incomingFriendsRequests, setIncomingFriendsRequests] = useState([]);
   const [outgoingFriendRequestsList, setOutgoingFriendRequestsList] = useState([]);
 
+  const { current: usrs} = useRef(users);
+
   useEffect(() => {
     getUsers();
-    if (users.length) {
-      setFriends(users.filter((user) => user.friendList.includes(authorizedUserId)));
+    if (usrs.length) {
+      setFriends(usrs.filter((user) => user.friendList.includes(authorizedUserId)));
       setIncomingFriendsRequests(
-        users.filter((user) => user.outgoingFriendRequestsList.includes(authorizedUserId))
+        usrs.filter((user) => user.outgoingFriendRequestsList.includes(authorizedUserId))
       );
       setOutgoingFriendRequestsList(
-        users.filter((user) => user.incomingFriendRequestsList.includes(authorizedUserId))
+        usrs.filter((user) => user.incomingFriendRequestsList.includes(authorizedUserId))
       );
     }
-  }, []);
+  }, [getUsers, authorizedUserId, usrs]);
 
   useEffect(() => {
     if (users.length) {
@@ -32,7 +34,7 @@ export const FriendsPage = () => {
         users.filter((user) => user.incomingFriendRequestsList.includes(authorizedUserId))
       );
     }
-  }, [users]);
+  }, [users, authorizedUserId]);
 
   return (
     <div className={styles.container}>

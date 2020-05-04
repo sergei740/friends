@@ -9,7 +9,7 @@ export const UsersPage = () => {
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [getUsers]);
 
   return (
     <div className={styles.container}>
