@@ -68,7 +68,7 @@ router.post(
       if (!errors.isEmpty()) {
         return res
           .status(400)
-          .json({ error: errors.array(), message: "Incorrect data during registration" });
+          .json({ error: errors.array(), message: "Incorrect login details" });
       }
 
       const { email, password } = req.body;
