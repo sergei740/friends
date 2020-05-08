@@ -19,6 +19,7 @@ export const UserCard = (props) => {
     friendList,
     outgoingFriendRequestsList,
     incomingFriendRequestsList,
+    photo,
   } = props.user;
   const isFriend = friendList.includes(authorizedUserId);
   const isIncomingRequest = outgoingFriendRequestsList.includes(authorizedUserId);
@@ -27,7 +28,7 @@ export const UserCard = (props) => {
   return (
     <div className={styles.userCard}>
       <div className={styles.flexContainer}>
-        <img src="https://via.placeholder.com/65" alt="turkish" className={styles.photo} />
+        <img src={photo || `https://via.placeholder.com/65`} alt={name} className={styles.photo} />
         <p className={styles.name}>{_.capitalize(name)}</p>
       </div>
       <div className={styles.buttonsContainer}>

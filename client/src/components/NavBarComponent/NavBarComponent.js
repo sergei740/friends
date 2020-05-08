@@ -7,9 +7,8 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { withStyles } from "@material-ui/core/styles";
 
 export const NavBarComponent = () => {
-  const { logOut, loading, authorizedUser } = useContext(Context);
-  const { name } = authorizedUser;
-  
+  const { logOut, loading } = useContext(Context);
+
   const ColorLinearProgress = withStyles({
     root: {
       height: 3,
@@ -28,10 +27,9 @@ export const NavBarComponent = () => {
         <div>
           <NavLink to="/users">USERS</NavLink>
           <NavLink to="/friends">FRIENDS</NavLink>
-          <NavLink to="/game">GAME</NavLink>
         </div>
         <div className={styles.userInfoContainer}>
-          <UserInfoComponent userName={name} />
+          <UserInfoComponent />
           <button
             name="registartion"
             type="button"

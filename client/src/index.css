@@ -7,5 +7,20 @@ body {
 }
 
 p {
-  margin: 0
+  margin: 0;
+}
+
+.my-node-enter {
+  opacity: 0;
+}
+.my-node-enter-active {
+  opacity: 1;
+  transition: opacity 3s ease-in-out;
+}
+.my-node-exit {
+  opacity: 1;
+}
+.my-node-exit-active {
+  opacity: 0;
+  transition: opacity 3s ease-in-out;
 }

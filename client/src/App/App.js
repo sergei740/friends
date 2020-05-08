@@ -3,10 +3,10 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Context } from "../context/Context";
 import { useHttp } from "../hooks/http.hook";
 import { useRoutes } from "../routes/routes";
-import _ from "lodash";
+import { useAuth } from "../hooks/auth.hook";
 
 function App() {
-  const [token, setToken] = useState(null);
+  const { token, login, logout } = useAuth();
   const routes = useRoutes(token);
   const { loading, request } = useHttp();
   const [componentName, setComponentName] = useState("");
@@ -22,10 +22,11 @@ function App() {
   });
   const [submitFormData, setSubmitFormData] = useState({});
   const [users, setUsers] = useState([]);
-  const [authorizedUser, setAuthorizedUser] = useState({});
-  const authorizedUserId = JSON.parse(localStorage.getItem("id"));
+  const [authorizedUser, setAuthorizedUser] = useState("");
 
   const changeComponentName = (e) => {
+    setSignInForm({ email: "", password: "" });
+    setRegistrationForm({ name: "", email: "", login: "", password: "" });
     setSubmitFormData({});
     if (e.target.name) {
       setComponentName(e.target.name);
@@ -62,30 +63,32 @@ function App() {
     const data = await request("/api/auth/login", "POST", { ...signInForm });
     setSubmitFormData({});
     if (data.token) {
-      localStorage.setItem("token", JSON.stringify(data.token));
-      localStorage.setItem("id", JSON.stringify(data.userId));
-      setToken(data.token);
+      login(data.token, data.userId);
       setSignInForm({ email: "", password: "" });
     }
     setSubmitFormData(data);
   };
 
   const logOut = () => {
-    localStorage.clear();
-    setToken(null);
-    setAuthorizedUser({});
+    logout();
     setComponentName("");
   };
 
-  const getUsers = useCallback(async () => {
-    const data = await request("/api/users/users", "GET");
-    const usersByAuthorizedUserId = data.users.filter((user) => user._id !== authorizedUserId);
-    if (_.isEmpty(authorizedUser)) {
-      const authUserByAuthorizedUserId = data.users.find((user) => user._id === authorizedUserId);
-      setAuthorizedUser(authUserByAuthorizedUserId);
-    }
-    setUsers(usersByAuthorizedUserId);
-  }, [authorizedUserId, authorizedUser, request]);
+  const getUsers = useCallback(
+    async (token) => {
+      const data = await request("/api/users/users", "GET", null, {
+        Authorization: `Bearer ${token}`,
+      });
+
+      setAuthorizedUser({
+        name: data.authUserName,
+        photo: data.authUserPhoto,
+        id: data.authUserId,
+      });
+      setUsers(data.users);
+    },
+    [request]
+  );
 
   const sendFriendRequest = async (authorizedUserId, friendCandidateId) => {
     const data = await request("/api/users/sendFriendRequest", "POST", {
@@ -127,13 +130,7 @@ function App() {
     setUsers(data.users);
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setToken(JSON.parse(localStorage.getItem("token")));
-    } else {
-      setToken(null);
-    }
-  }, [token]);
+  useEffect(() => {}, [token]);
 
   return (
     <Context.Provider
@@ -154,10 +151,10 @@ function App() {
         acceptFriendRequest,
         rejectFriendRequest,
         deleteFriend,
-        authorizedUserId,
         users,
         getUsers,
         authorizedUser,
+        token,
       }}
     >
       <Router>{routes}</Router>

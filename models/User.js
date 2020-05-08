@@ -4,7 +4,7 @@ const schema = new Schema({
   email: { type: String, required: true, unique: true },
   login: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  // photo: { data: Buffer, contentType: String },
+  photo: { type: String },
   friendList: { type: Array },
   incomingFriendRequestsList: { type: Array },
   outgoingFriendRequestsList: { type: Array },

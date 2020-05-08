@@ -3,7 +3,6 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { StartPage } from "../pages/StartPage/StartPage";
 import { UsersPage } from "../pages/UsersPage/UsersPage";
 import { FriendsPage } from "../pages/FriendsPage/FriendsPage";
-import { GamePage } from "../pages/GamePage/GamePage";
 import { NavBarComponent } from "../components/NavBarComponent/NavBarComponent";
 
 export const useRoutes = (isAuthenticated) => {
@@ -17,10 +16,6 @@ export const useRoutes = (isAuthenticated) => {
         <Route path="/friends" exact>
           <NavBarComponent />
           <FriendsPage />
-        </Route>
-        <Route path="/game" exact>
-          <NavBarComponent />
-          <GamePage />
         </Route>
         <Redirect to="/users" />
       </Switch>

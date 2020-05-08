@@ -5,7 +5,7 @@ import { UserCard } from "../../components/UserCard/UserCard";
 import { Context } from "../../context/Context";
 
 export const UsersPage = () => {
-  const { users, authorizedUserId, getUsers } = useContext(Context);
+  const { users, authorizedUser, getUsers, token } = useContext(Context);
   const [textInput, setTextInput] = useState("");
   const [filteredUsers, setFilteredUsers] = useState(users);
 
@@ -18,23 +18,25 @@ export const UsersPage = () => {
   }, [users]);
 
   useEffect(() => {
-    const newFilteredUsers = users.filter((user) => {
-      // return user.name.toLowerCase().trim().indexOf(textInput.toLocaleLowerCase().trim()) === 0;
-      return user.name.toLowerCase().trim().includes(textInput.toLocaleLowerCase().trim());
-    });
-    setFilteredUsers(newFilteredUsers);
+    if (users) {
+      const newFilteredUsers = users.filter((user) => {
+        // return user.name.toLowerCase().trim().indexOf(textInput.toLocaleLowerCase().trim()) === 0;
+        return user.name.toLowerCase().trim().includes(textInput.toLocaleLowerCase().trim());
+      });
+      setFilteredUsers(newFilteredUsers);
+    }
   }, [textInput, users]);
 
   useEffect(() => {
-    getUsers();
-  }, [getUsers]);
+    getUsers(token);
+  }, [getUsers, token]);
 
   return (
     <div className={styles.container}>
       <TextField placeholder="Search User" onChange={inputHandler} value={textInput} />
       {filteredUsers &&
         filteredUsers.map((user) => (
-          <UserCard key={user._id} authorizedUserId={authorizedUserId} user={user} />
+          <UserCard key={user._id} authorizedUserId={authorizedUser.id} user={user} />
         ))}
     </div>
   );

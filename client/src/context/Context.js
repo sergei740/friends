@@ -23,4 +23,6 @@ export const Context = createContext({
   users: [],
   getUsers: noop,
   setNavBarInfo: noop,
+  authorizedUser: {},
+  token: null,
 });

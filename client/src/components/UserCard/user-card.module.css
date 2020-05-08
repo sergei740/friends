@@ -18,7 +18,7 @@
 }
 
 .userCard:hover {
-  box-shadow: 0px 0px 2px 0px rgba(0, 123, 255, 1);
+  box-shadow: 0px 0px 2px 1px rgba(0, 123, 255, 1);
 }
 
 .buttonsContainer {
@@ -31,6 +31,11 @@
   height: 65px;
   border-radius: 50px;
   margin-right: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.photo:hover {
+  cursor: pointer;
 }
 
 .name {

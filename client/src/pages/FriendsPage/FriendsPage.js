@@ -4,37 +4,37 @@ import { Context } from "../../context/Context";
 import { UserCard } from "../../components/UserCard/UserCard";
 
 export const FriendsPage = () => {
-  const { users, authorizedUserId, getUsers } = useContext(Context);
+  const { users, authorizedUser, getUsers, token } = useContext(Context);
   const [friends, setFriends] = useState([]);
   const [incomingFriendsRequests, setIncomingFriendsRequests] = useState([]);
   const [outgoingFriendRequestsList, setOutgoingFriendRequestsList] = useState([]);
 
-  const { current: usrs} = useRef(users);
+  const { current: usrs } = useRef(users);
 
   useEffect(() => {
-    getUsers();
+    getUsers(token);
     if (usrs.length) {
-      setFriends(usrs.filter((user) => user.friendList.includes(authorizedUserId)));
+      setFriends(usrs.filter((user) => user.friendList.includes(authorizedUser.id)));
       setIncomingFriendsRequests(
-        usrs.filter((user) => user.outgoingFriendRequestsList.includes(authorizedUserId))
+        usrs.filter((user) => user.outgoingFriendRequestsList.includes(authorizedUser.id))
       );
       setOutgoingFriendRequestsList(
-        usrs.filter((user) => user.incomingFriendRequestsList.includes(authorizedUserId))
+        usrs.filter((user) => user.incomingFriendRequestsList.includes(authorizedUser.id))
       );
     }
-  }, [getUsers, authorizedUserId, usrs]);
+  }, [getUsers, token, authorizedUser.id, usrs]);
 
   useEffect(() => {
     if (users.length) {
-      setFriends(users.filter((user) => user.friendList.includes(authorizedUserId)));
+      setFriends(users.filter((user) => user.friendList.includes(authorizedUser.id)));
       setIncomingFriendsRequests(
-        users.filter((user) => user.outgoingFriendRequestsList.includes(authorizedUserId))
+        users.filter((user) => user.outgoingFriendRequestsList.includes(authorizedUser.id))
       );
       setOutgoingFriendRequestsList(
-        users.filter((user) => user.incomingFriendRequestsList.includes(authorizedUserId))
+        users.filter((user) => user.incomingFriendRequestsList.includes(authorizedUser.id))
       );
     }
-  }, [users, authorizedUserId]);
+  }, [users, authorizedUser.id]);
 
   return (
     <div className={styles.container}>
@@ -46,7 +46,7 @@ export const FriendsPage = () => {
         <div>
           <p className={styles.headerText}>Your Friends</p>
           {friends.map((friend) => (
-            <UserCard key={friend._id} authorizedUserId={authorizedUserId} user={friend} />
+            <UserCard key={friend._id} authorizedUserId={authorizedUser.id} user={friend} />
           ))}
         </div>
       ) : null}
@@ -55,7 +55,7 @@ export const FriendsPage = () => {
         <div>
           <p className={styles.headerText}>Incoming Friends Request</p>
           {incomingFriendsRequests.map((user) => (
-            <UserCard key={user._id} authorizedUserId={authorizedUserId} user={user} />
+            <UserCard key={user._id} authorizedUserId={authorizedUser.id} user={user} />
           ))}
         </div>
       ) : null}
@@ -64,7 +64,7 @@ export const FriendsPage = () => {
         <div>
           <p className={styles.headerText}>Outgoing Friends Request</p>
           {outgoingFriendRequestsList.map((user) => (
-            <UserCard key={user._id} authorizedUserId={authorizedUserId} user={user} />
+            <UserCard key={user._id} authorizedUserId={authorizedUser.id} user={user} />
           ))}
         </div>
       ) : null}

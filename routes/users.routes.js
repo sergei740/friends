@@ -1,12 +1,73 @@
 const { Router } = require("express");
+const path = require("path");
 const User = require("../models/User");
 const router = Router();
+const auth = require("../middleware/auth.middleware");
+const multer = require("multer");
+const fs = require("fs");
+
+const Storage = multer.diskStorage({
+  destination: "client/public/usersPhoto",
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({
+  storage: Storage,
+}).single("file");
+
+// /api/users/deleteUserPhoto
+router.get("/deleteUserPhoto", auth, async (req, res) => {
+  try {
+    const authUserId = req.user.userId;
+    const user = await User.findById(authUserId);
+    const fileName = user.photo;
+    const pathToFile = path.join(__dirname, "..", "client", "public", fileName);
+
+    await user.updateOne({ photo: "" });
+    await fs.unlink(pathToFile, (err) => {
+      if (err) throw err;
+      console.log("File deleted!");
+    });
+
+    res.status(200).json({ message: user });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong, try it again" });
+  }
+});
+
+// /api/users/userPhoto
+router.post("/userPhoto", upload, auth, async (req, res) => {
+  try {
+    const authUserId = req.user.userId; /// Get from auth middleware
+
+    const fileName = req.file.filename;
+
+    const user = await User.findById(authUserId);
+    await user.updateOne({ photo: `/usersPhoto/${fileName}` });
+
+    res.status(200).json({ message: "Photo was updated" });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong, try it again" });
+  }
+});
 
 // /api/users/users
-router.get("/users", async (req, res) => {
+router.get("/users", auth, async (req, res) => {
   try {
-    const allUsers = await User.find({});
-    res.status(200).json({ users: allUsers });
+    const authUserId = req.user.userId; /// Get from auth middleware
+
+    const authUser = await User.findById(authUserId);
+
+    const users = await User.find({ _id: { $nin: authUserId } });
+
+    res.status(200).json({
+      users: users,
+      authUserName: authUser.name,
+      authUserPhoto: authUser.photo,
+      authUserId,
+    });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong, try it again" });
   }

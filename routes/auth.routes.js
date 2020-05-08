@@ -40,6 +40,7 @@ router.post(
         email,
         login,
         password: hashedPassword,
+        photo: "",
         friendList: [],
         incomingFriendRequestsList: [],
         outgoingFriendRequestsList: [],
@@ -49,7 +50,7 @@ router.post(
 
       res.status(201).json({ message: "User created" });
     } catch (error) {
-      res.status(500).json({ message: "Something went wrong, try it again" });
+      res.status(500).json({ message: "Something went wrong, try it again", error: "error" });
     }
   }
 );
@@ -66,9 +67,7 @@ router.post(
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        return res
-          .status(400)
-          .json({ error: errors.array(), message: "Incorrect login details" });
+        return res.status(400).json({ error: errors.array(), message: "Incorrect login details" });
       }
 
       const { email, password } = req.body;
