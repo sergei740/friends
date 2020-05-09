@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { Fragment, useContext } from "react";
 import { RegistrationFormComponent } from "../../components/RegistrationFormComponent/RegistrationFormComponent";
 import { SignInFormComponent } from "../../components/SignInFormComponent/SignInFormComponent";
 import { StartPageComponent } from "../../components/StartPageComponent/StartPageComponent";
@@ -18,5 +18,5 @@ export const StartPage = () => {
     }
   };
 
-  return <>{renderComponent(componentName)}</>;
+  return <Fragment>{renderComponent(componentName)}</Fragment>;
 };

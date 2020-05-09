@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { CSSTransition } from "react-transition-group";
 import styles from "./alert.module.css";
+import fadeTransition from "./transitions/fade.module.css";
 
 export const Alert = (props) => {
   const { message, type } = props;
   const [alertType, setAlertType] = useState(type);
+  const [animation, setAnimation] = useState(false);
 
   const style = (alertType) => {
     switch (alertType) {
@@ -18,14 +21,26 @@ export const Alert = (props) => {
     }
   };
 
+  useEffect(() => {
+    setAnimation(true);
+  }, []);
+
   return (
-    <div
-      className={style(alertType)}
-      onClick={() => {
-        setAlertType("hide");
-      }}
+    <CSSTransition
+      in={animation}
+      timeout={1000}
+      classNames={fadeTransition}
+      mountOnEnter
+      unmountOnExit
     >
-      <div>{message}</div>
-    </div>
+      <div
+        className={style(alertType)}
+        onClick={() => {
+          setAlertType("hide");
+        }}
+      >
+        <div>{message}</div>
+      </div>
+    </CSSTransition>
   );
 };

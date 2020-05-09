@@ -1,43 +1,68 @@
 import React, { useContext, useState, useEffect } from "react";
-import styles from "./start-page-component.module.css";
-import { Context } from "../../context/Context";
 import { CSSTransition } from "react-transition-group";
+import styles from "./start-page-component.module.css";
+import fadeTransition from "./transitions/fade.module.css";
+import slideFromLeftTransition from "./transitions/slide-from-left.module.css";
+import slideFromRightTransition from "./transitions/slide-from-right.module.css";
+import { Context } from "../../context/Context";
 
 export const StartPageComponent = () => {
   const { changeComponentName } = useContext(Context);
-  const [fade, setFade] = useState(false);
+  const [animation, setAnimation] = useState(false);
 
   useEffect(() => {
-    setFade(true);
+    setAnimation(true);
   }, []);
 
   return (
     <div className={styles.mainContainer}>
       <div>
-        <CSSTransition in={fade} timeout={3000} classNames="my-node" unmountOnExit>
+        <CSSTransition
+          in={animation}
+          timeout={2500}
+          classNames={fadeTransition}
+          mountOnEnter
+          unmountOnExit
+        >
           <div className={styles.textContainer}>
             <p className={styles.text}>join to the</p>
             <h1>FRIENDS</h1>
           </div>
         </CSSTransition>
         <div className={styles.buttonsContainer}>
-          <button
-            name="singin"
-            type="button"
-            className="btn btn-outline-primary"
-            onClick={changeComponentName}
+          <CSSTransition
+            in={animation}
+            timeout={1500}
+            classNames={slideFromLeftTransition}
+            mountOnEnter
+            unmountOnExit
           >
-            SIGN IN
-          </button>
+            <button
+              name="singin"
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={changeComponentName}
+            >
+              SIGN IN
+            </button>
+          </CSSTransition>
           <p className={styles.text}>or</p>
-          <button
-            name="registartion"
-            type="button"
-            className="btn btn-outline-danger"
-            onClick={changeComponentName}
+          <CSSTransition
+            in={animation}
+            timeout={1500}
+            classNames={slideFromRightTransition}
+            mountOnEnter
+            unmountOnExit
           >
-            REGISTRATION
-          </button>
+            <button
+              name="registartion"
+              type="button"
+              className="btn btn-outline-danger"
+              onClick={changeComponentName}
+            >
+              REGISTRATION
+            </button>
+          </CSSTransition>
         </div>
       </div>
     </div>

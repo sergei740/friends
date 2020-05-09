@@ -20,6 +20,11 @@
   align-items: center;
 }
 
+.textFieldsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
 .buttonContainer {
   width: 300px;
   align-items: center;

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./nav-bar-component.module.css";
 import { Context } from "../../context/Context";
@@ -22,7 +22,7 @@ export const NavBarComponent = () => {
   })(LinearProgress);
 
   return (
-    <>
+    <Fragment>
       <div className={styles.navBarContainer}>
         <div>
           <NavLink to="/users">USERS</NavLink>
@@ -41,6 +41,6 @@ export const NavBarComponent = () => {
         </div>
       </div>
       <div className={styles.progress}>{loading && <ColorLinearProgress />}</div>
-    </>
+    </Fragment>
   );
 };

@@ -48,6 +48,7 @@ function App() {
     if (!data.error) {
       setSubmitFormData(data);
       setRegistrationForm({ name: "", email: "", login: "", password: "" });
+      setComponentName("singin");
     }
     setSubmitFormData(data);
   };

@@ -38,6 +38,7 @@ export const UserInfoComponent = () => {
     const data = await request("/api/users/deleteUserPhoto", "GET", null, {
       Authorization: `Bearer ${token}`,
     });
+    console.log(data);
   };
 
   const handleClickOpen = () => {
