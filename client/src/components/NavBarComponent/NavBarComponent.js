@@ -1,5 +1,7 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext, useState, useEffect, Fragment } from "react";
 import { NavLink } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
+import slideFromTopTransition from "./transitions/slide-from-top.module.css";
 import styles from "./nav-bar-component.module.css";
 import { Context } from "../../context/Context";
 import { UserInfoComponent } from "../UserInfoComponentt/UserInfoComponent";
@@ -8,10 +10,14 @@ import { withStyles } from "@material-ui/core/styles";
 
 export const NavBarComponent = () => {
   const { logOut, loading } = useContext(Context);
+  const [animation, setAnimation] = useState(false);
 
   const ColorLinearProgress = withStyles({
     root: {
-      height: 3,
+      height: 2,
+      zIndex: 2000,
+      position: "fixed",
+      width: "100%",
     },
     colorPrimary: {
       backgroundColor: "#ffffff",
@@ -21,26 +27,42 @@ export const NavBarComponent = () => {
     },
   })(LinearProgress);
 
+  useEffect(() => {
+    setAnimation(true);
+  }, []);
+
   return (
-    <Fragment>
-      <div className={styles.navBarContainer}>
-        <div>
-          <NavLink to="/users">USERS</NavLink>
-          <NavLink to="/friends">FRIENDS</NavLink>
+    <CSSTransition
+      in={animation}
+      timeout={1500}
+      classNames={slideFromTopTransition}
+      mountOnEnter
+      unmountOnExit
+    >
+      <Fragment>
+        <div className={styles.navBarContainer}>
+          <div>
+            <NavLink exact to="/users" activeClassName={styles.active}>
+              USERS
+            </NavLink>
+            <NavLink exact to="/friends" activeClassName={styles.active}>
+              FRIENDS
+            </NavLink>
+          </div>
+          <div className={styles.userInfoContainer}>
+            <UserInfoComponent />
+            <button
+              name="registartion"
+              type="button"
+              className="btn btn-outline-danger"
+              onClick={logOut}
+            >
+              LOG OUT
+            </button>
+          </div>
         </div>
-        <div className={styles.userInfoContainer}>
-          <UserInfoComponent />
-          <button
-            name="registartion"
-            type="button"
-            className="btn btn-outline-danger"
-            onClick={logOut}
-          >
-            LOG OUT
-          </button>
-        </div>
-      </div>
-      <div className={styles.progress}>{loading && <ColorLinearProgress />}</div>
-    </Fragment>
+        {loading && <ColorLinearProgress />}
+      </Fragment>
+    </CSSTransition>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, Fragment } from "react";
 import { Dialog } from "@material-ui/core";
 import styles from "./user-info-component.module.css";
 import { Context } from "../../context/Context";
@@ -8,7 +8,13 @@ import _ from "lodash";
 export const UserInfoComponent = () => {
   const [open, setOpen] = useState(false);
   const { authorizedUser, token } = useContext(Context);
+  const [photoAuthUser, setPhotoAuthUser] = useState("");
   const { request } = useHttp();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setPhotoAuthUser(authorizedUser.photo);
+  }, [authorizedUser]);
 
   const fileInputHandler = () => {
     const btn = document.getElementById("submit");
@@ -28,17 +34,24 @@ export const UserInfoComponent = () => {
         Authorization: `Bearer ${token}`,
       },
     };
-
-    fetch("/api/users/userPhoto", options).then((response) => {
-      console.log(response);
-    });
+    setLoading(true);
+    fetch("/api/users/userPhoto", options)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setLoading(false);
+        setPhotoAuthUser(data.photo);
+      });
   };
 
   const deletePhoto = async () => {
+    setLoading(true);
     const data = await request("/api/users/deleteUserPhoto", "GET", null, {
       Authorization: `Bearer ${token}`,
     });
-    console.log(data);
+    setLoading(false);
+    setPhotoAuthUser(data.photo);
   };
 
   const handleClickOpen = () => {
@@ -50,7 +63,12 @@ export const UserInfoComponent = () => {
   };
 
   function SimpleDialog(props) {
-    const { onClose, selectedValue, open } = props;
+    const { onClose, selectedValue, open, photo } = props;
+    const [userPhoto, setUserPhoto] = useState("");
+
+    useEffect(() => {
+      setUserPhoto(photo);
+    }, [photo]);
 
     const handleClose = () => {
       onClose(selectedValue);
@@ -65,29 +83,40 @@ export const UserInfoComponent = () => {
           style: {
             backgroundColor: "transparent",
             boxShadow: "none",
+            overflow: "hidden",
           },
         }}
       >
-        <img
-          src={authorizedUser.photo || "https://via.placeholder.com/200"}
-          alt={authorizedUser.name}
-          style={{ overflow: "hidden" }}
-        />
-        <form encType="multipart/form-data" onSubmit={uploadPhoto}>
-          <input
-            type="file"
-            name="file"
-            id="file"
-            accept="image/gif, image/jpeg, image/png"
-            onChange={fileInputHandler}
-          />
-          <button id="submit" type="submit" className="btn btn-primary btn-sm" disabled>
-            Upload photo
-          </button>
-          <button type="button" className="btn btn-danger btn-sm" onClick={deletePhoto}>
-            Delete photo
-          </button>
-        </form>
+        {!loading ? (
+          <Fragment>
+            <img
+              src={userPhoto || "https://ipsumimage.appspot.com/400"}
+              alt={userPhoto || "https://ipsumimage.appspot.com/400"}
+              style={{ width: "100%", overflow: "hidden", height: "auto" }}
+            />
+            <form encType="multipart/form-data" className={styles.form} onSubmit={uploadPhoto}>
+              <input
+                type="file"
+                name="file"
+                id="file"
+                accept="image/*"
+                onChange={fileInputHandler}
+              />
+              <label htmlFor="file">Choose a Photo</label>
+
+              <button id="submit" type="submit" className="btn btn-primary btn-sm" disabled>
+                Upload photo
+              </button>
+              <button type="button" className="btn btn-danger btn-sm" onClick={deletePhoto}>
+                Delete photo
+              </button>
+            </form>
+          </Fragment>
+        ) : (
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
       </Dialog>
     );
   }
@@ -96,13 +125,13 @@ export const UserInfoComponent = () => {
     <div className={styles.container}>
       <div className={styles.photoContainer} onClick={handleClickOpen}>
         <img
-          src={authorizedUser.photo || "https://via.placeholder.com/65"}
+          src={photoAuthUser || "https://via.placeholder.com/65"}
           className={styles.photoBlock}
           alt={authorizedUser.name}
         />
       </div>
       <div>{_.capitalize(authorizedUser.name)}</div>
-      <SimpleDialog open={open} onClose={handleClose} />
+      <SimpleDialog open={open} onClose={handleClose} photo={photoAuthUser} />
     </div>
   );
 };

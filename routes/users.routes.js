@@ -28,10 +28,10 @@ router.get("/deleteUserPhoto", auth, async (req, res) => {
     await user.updateOne({ photo: "" });
     await fs.unlink(pathToFile, (err) => {
       if (err) throw err;
-      console.log("File deleted!");
+      console.log("Photo deleted!");
     });
 
-    res.status(200).json({ message: user });
+    res.status(200).json({ message: "Photo deleted!", photo: "" });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong, try it again" });
   }
@@ -41,13 +41,22 @@ router.get("/deleteUserPhoto", auth, async (req, res) => {
 router.post("/userPhoto", upload, auth, async (req, res) => {
   try {
     const authUserId = req.user.userId; /// Get from auth middleware
-
-    const fileName = req.file.filename;
-
     const user = await User.findById(authUserId);
-    await user.updateOne({ photo: `/usersPhoto/${fileName}` });
+    const previousFileName = user.photo;
+    const newFileName = req.file.filename;
 
-    res.status(200).json({ message: "Photo was updated" });
+    if (previousFileName) {
+      const pathToFile = path.join(__dirname, "..", "client", "public", previousFileName);
+
+      await fs.unlink(pathToFile, (err) => {
+        if (err) throw err;
+        console.log("Photo deleted!");
+      });
+    }
+
+    await user.updateOne({ photo: `/usersPhoto/${newFileName}` });
+
+    res.status(200).json({ message: "Photo was updated", photo: `/usersPhoto/${newFileName}` });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong, try it again" });
   }
@@ -195,7 +204,7 @@ router.post("/rejectFriendRequest", async (req, res) => {
     if (authorizedUser.incomingFriendRequestsList.includes(friendCandidateId)) {
       await authorizedUser.updateOne({
         incomingFriendRequestsList: [
-          ...incomingFriendRequestsList.filter((id) => id !== friendCandidateId),
+          ...authorizedUser.incomingFriendRequestsList.filter((id) => id !== friendCandidateId),
         ],
       });
     }
@@ -203,7 +212,7 @@ router.post("/rejectFriendRequest", async (req, res) => {
     if (friendCandidate.outgoingFriendRequestsList.includes(authorizedUserId)) {
       await friendCandidate.updateOne({
         outgoingFriendRequestsList: [
-          ...outgoingFriendRequestsList.filter((id) => id !== friendCandidateId),
+          ...friendCandidate.outgoingFriendRequestsList.filter((id) => id !== authorizedUserId),
         ],
       });
     }
