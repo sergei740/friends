@@ -40,8 +40,8 @@ export const UserInfoComponent = () => {
         return response.json();
       })
       .then((data) => {
-        setLoading(false);
         setPhotoAuthUser(data.photo);
+        setLoading(false);
       });
   };
 

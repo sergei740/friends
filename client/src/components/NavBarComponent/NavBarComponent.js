@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
-import slideFromTopTransition from "./transitions/slide-from-top.module.css";
+import fadeTransition from "./transitions/fade.module.css";
 import styles from "./nav-bar-component.module.css";
 import { Context } from "../../context/Context";
 import { UserInfoComponent } from "../UserInfoComponentt/UserInfoComponent";
@@ -34,8 +34,8 @@ export const NavBarComponent = () => {
   return (
     <CSSTransition
       in={animation}
-      timeout={1500}
-      classNames={slideFromTopTransition}
+      timeout={750}
+      classNames={fadeTransition}
       mountOnEnter
       unmountOnExit
     >
