@@ -17,9 +17,9 @@ export const UserInfoComponent = () => {
 
   const uploadPhoto = async (e) => {
     e.preventDefault();
-    const file = await document.getElementById("file");
-    const formData = await new FormData();
-    await formData.append("file", file.files[0]);
+    const file = document.getElementById("file");
+    const formData = new FormData();
+    formData.append("file", file.files[0]);
 
     const data = await request("/api/users/userPhoto", "POST", formData, {
       Authorization: `Bearer ${token}`,
