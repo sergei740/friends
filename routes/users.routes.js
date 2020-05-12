@@ -7,7 +7,7 @@ const multer = require("multer");
 const fs = require("fs");
 
 const Storage = multer.diskStorage({
-  destination: "client/public/usersPhoto",
+  destination: "client/build/usersPhoto",
   filename: (req, file, cb) => {
     cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
   },
@@ -23,7 +23,7 @@ router.get("/deleteUserPhoto", auth, async (req, res) => {
     const authUserId = req.user.userId;
     const user = await User.findById(authUserId);
     const fileName = user.photo;
-    const pathToFile = path.join(__dirname, "..", "client", "public", fileName);
+    const pathToFile = path.join(__dirname, "..", "client", "build", fileName);
 
     await user.updateOne({ photo: "" });
     await fs.unlink(pathToFile, (err) => {
@@ -46,7 +46,7 @@ router.post("/userPhoto", upload, auth, async (req, res) => {
     const newFileName = req.file.filename;
 
     if (previousFileName) {
-      const pathToFile = path.join(__dirname, "..", "client", "public", previousFileName);
+      const pathToFile = path.join(__dirname, "..", "client", "build", previousFileName);
 
       await fs.unlink(pathToFile, (err) => {
         if (err) throw err;
@@ -54,9 +54,9 @@ router.post("/userPhoto", upload, auth, async (req, res) => {
       });
     }
 
-    await user.updateOne({ photo: `/usersPhoto/${newFileName}` });
+    await user.updateOne({ photo: `build/usersPhoto/${newFileName}` });
 
-    res.status(200).json({ message: "Photo was updated", photo: `/usersPhoto/${newFileName}` });
+    res.status(200).json({ message: "Photo was updated", photo: `usersPhoto/${newFileName}` });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong, try it again" });
   }

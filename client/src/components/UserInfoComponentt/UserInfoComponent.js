@@ -77,7 +77,7 @@ export const UserInfoComponent = () => {
           <Fragment>
             {userPhoto ? (
               <img
-                src={userPhoto}
+                src={require(userPhoto)}
                 alt={userPhoto}
                 style={{
                   width: "100%",
