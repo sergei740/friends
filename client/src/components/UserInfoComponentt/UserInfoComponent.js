@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, Fragment } from "react";
-import { Dialog } from "@material-ui/core";
+import { Dialog, makeStyles } from "@material-ui/core";
 import styles from "./user-info-component.module.css";
 import { Context } from "../../context/Context";
 import { useHttp } from "../../hooks/http.hook";
@@ -9,48 +9,29 @@ export const UserInfoComponent = () => {
   const [open, setOpen] = useState(false);
   const { authorizedUser, token } = useContext(Context);
   const [photoAuthUser, setPhotoAuthUser] = useState("");
-  const { request } = useHttp();
-  const [loading, setLoading] = useState(false);
+  const { request, loading } = useHttp();
 
   useEffect(() => {
     setPhotoAuthUser(authorizedUser.photo);
   }, [authorizedUser]);
 
-  const fileInputHandler = () => {
-    const btn = document.getElementById("submit");
-    btn.removeAttribute("disabled");
-  };
-
-  const uploadPhoto = (e) => {
+  const uploadPhoto = async (e) => {
     e.preventDefault();
-    const file = document.getElementById("file");
-    const formData = new FormData();
-    formData.append("file", file.files[0]);
+    const file = await document.getElementById("file");
+    const formData = await new FormData();
+    await formData.append("file", file.files[0]);
 
-    const options = {
-      method: "POST",
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    setLoading(true);
-    fetch("/api/users/userPhoto", options)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setPhotoAuthUser(data.photo);
-        setLoading(false);
-      });
+    const data = await request("/api/users/userPhoto", "POST", formData, {
+      Authorization: `Bearer ${token}`,
+    });
+
+    setPhotoAuthUser(data.photo);
   };
 
   const deletePhoto = async () => {
-    setLoading(true);
     const data = await request("/api/users/deleteUserPhoto", "GET", null, {
       Authorization: `Bearer ${token}`,
     });
-    setLoading(false);
     setPhotoAuthUser(data.photo);
   };
 
@@ -63,6 +44,10 @@ export const UserInfoComponent = () => {
   };
 
   function SimpleDialog(props) {
+    const useStyles = makeStyles({
+      root: { background: "rgba(0, 0, 0, 0.8)" },
+    });
+    const classes = useStyles();
     const { onClose, selectedValue, open, photo } = props;
     const [userPhoto, setUserPhoto] = useState("");
 
@@ -79,6 +64,7 @@ export const UserInfoComponent = () => {
         onClose={handleClose}
         aria-labelledby="simple-dialog-title"
         open={open}
+        className={classes.root}
         PaperProps={{
           style: {
             backgroundColor: "transparent",
@@ -89,28 +75,43 @@ export const UserInfoComponent = () => {
       >
         {!loading ? (
           <Fragment>
-            <img
-              src={userPhoto || "https://ipsumimage.appspot.com/400"}
-              alt={userPhoto || "https://ipsumimage.appspot.com/400"}
-              style={{ width: "100%", overflow: "hidden", height: "auto" }}
-            />
-            <form encType="multipart/form-data" className={styles.form} onSubmit={uploadPhoto}>
-              <input
-                type="file"
-                name="file"
-                id="file"
-                accept="image/*"
-                onChange={fileInputHandler}
+            {userPhoto ? (
+              <img
+                src={userPhoto}
+                alt={userPhoto}
+                style={{
+                  width: "100%",
+                  overflow: "hidden",
+                  height: "100vh",
+                  objectFit: "scale-down",
+                }}
               />
-              <label htmlFor="file">Choose a Photo</label>
+            ) : (
+              <h1 style={{ textTransform: "uppercase", color: "#ffffff" }}>
+                Choose file and Upload your profile photo
+              </h1>
+            )}
 
-              <button id="submit" type="submit" className="btn btn-primary btn-sm" disabled>
-                Upload photo
-              </button>
-              <button type="button" className="btn btn-danger btn-sm" onClick={deletePhoto}>
+            <div className={styles.form}>
+              <div className={styles.inputContainer}>
+                <button className={styles.btn}>Upload photo</button>
+                <input
+                  type="file"
+                  name="file"
+                  id="file"
+                  accept="image/jpg"
+                  onChange={uploadPhoto}
+                />
+              </div>
+              <button
+                type="button"
+                className="btn btn-danger btn-sm"
+                onClick={deletePhoto}
+                disabled={!userPhoto}
+              >
                 Delete photo
               </button>
-            </form>
+            </div>
           </Fragment>
         ) : (
           <div className="spinner-border text-primary" role="status">

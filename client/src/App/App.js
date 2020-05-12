@@ -23,6 +23,9 @@ function App() {
   const [submitFormData, setSubmitFormData] = useState({});
   const [users, setUsers] = useState([]);
   const [authorizedUser, setAuthorizedUser] = useState("");
+  const [friends, setFriends] = useState([]);
+  const [incomingFriendsRequests, setIncomingFriendsRequests] = useState([]);
+  const [outgoingFriendRequestsList, setOutgoingFriendRequestsList] = useState([]);
 
   const changeComponentName = (e) => {
     setSignInForm({ email: "", password: "" });
@@ -91,6 +94,19 @@ function App() {
     [request]
   );
 
+  const getFriends = useCallback(
+    async (token) => {
+      const data = await request("/api/users/friends", "GET", null, {
+        Authorization: `Bearer ${token}`,
+      });
+
+      setFriends(data.friends);
+      setIncomingFriendsRequests(data.incomingRequests);
+      setOutgoingFriendRequestsList(data.outgoingRequests);
+    },
+    [request]
+  );
+
   const sendFriendRequest = async (authorizedUserId, friendCandidateId) => {
     const data = await request("/api/users/sendFriendRequest", "POST", {
       authorizedUserId,
@@ -105,6 +121,7 @@ function App() {
       friendCandidateId,
     });
     setUsers(data.users);
+    getFriends(token);
   };
 
   const acceptFriendRequest = async (authorizedUserId, friendCandidateId) => {
@@ -113,6 +130,7 @@ function App() {
       friendCandidateId,
     });
     setUsers(data.users);
+    getFriends(token);
   };
 
   const rejectFriendRequest = async (authorizedUserId, friendCandidateId) => {
@@ -121,6 +139,7 @@ function App() {
       friendCandidateId,
     });
     setUsers(data.users);
+    getFriends(token);
   };
 
   const deleteFriend = async (authorizedUserId, friendId) => {
@@ -129,6 +148,7 @@ function App() {
       friendId,
     });
     setUsers(data.users);
+    getFriends(token);
   };
 
   useEffect(() => {}, [token]);
@@ -156,6 +176,10 @@ function App() {
         getUsers,
         authorizedUser,
         token,
+        getFriends,
+        friends,
+        incomingFriendsRequests,
+        outgoingFriendRequestsList,
       }}
     >
       <Router>{routes}</Router>

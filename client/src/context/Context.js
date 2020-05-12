@@ -25,4 +25,8 @@ export const Context = createContext({
   setNavBarInfo: noop,
   authorizedUser: {},
   token: null,
+  getFriends: noop,
+  friends: [],
+  incomingFriendsRequests: [],
+  outgoingFriendRequestsList: [],
 });

@@ -6,7 +6,9 @@ export const useHttp = () => {
   const request = useCallback(async (url, method = "GET", body = null, headers = {}) => {
     setLoading(true);
     try {
-      if (body) {
+      const instanceofBody = body instanceof FormData;
+
+      if (!instanceofBody && body) {
         body = JSON.stringify(body);
         headers["Content-Type"] = "application/json";
       }

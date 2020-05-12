@@ -82,6 +82,36 @@ router.get("/users", auth, async (req, res) => {
   }
 });
 
+// /api/users/friends
+router.get("/friends", auth, async (req, res) => {
+  try {
+    const authUserId = req.user.userId;
+    const user = await User.findById(authUserId);
+    const allUsersById = await User.find({ _id: { $nin: authUserId } });
+
+    const friendList = user.friendList;
+    const friends = allUsersById.filter((user) => friendList.includes(user._id));
+
+    const incomingFriendRequestsList = user.incomingFriendRequestsList;
+    const incomingFriendRequests = allUsersById.filter((user) =>
+      incomingFriendRequestsList.includes(user._id)
+    );
+
+    const outgoingFriendRequestsList = user.outgoingFriendRequestsList;
+    const outgoingFriendRequests = allUsersById.filter((user) =>
+      outgoingFriendRequestsList.includes(user._id)
+    );
+
+    res.status(200).json({
+      friends: friends,
+      incomingRequests: incomingFriendRequests,
+      outgoingRequests: outgoingFriendRequests,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong, try it again" });
+  }
+});
+
 // /api/users/sendFriendRequest
 router.post("/sendFriendRequest", async (req, res) => {
   try {
@@ -116,7 +146,10 @@ router.post("/sendFriendRequest", async (req, res) => {
 
     const allUsers = await User.find({ _id: { $nin: authorizedUserId } });
 
-    res.status(200).json({ message: "Friend request has been send", users: allUsers });
+    res.status(200).json({
+      message: "Friend request has been send",
+      users: allUsers,
+    });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong, try it again" });
   }
