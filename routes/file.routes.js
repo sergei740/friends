@@ -11,7 +11,7 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 const Grid = require("gridfs-stream");
 
-const conn = mongoose.createConnection(config.get("mongoUri"), {
+const conn = mongoose.createConnection(process.env.MONGODB_URI || config.get("mongoUri"), {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
