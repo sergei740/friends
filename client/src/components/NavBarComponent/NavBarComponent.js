@@ -17,6 +17,7 @@ export const NavBarComponent = () => {
       height: 2,
       zIndex: 2000,
       position: "fixed",
+      top: 0,
       width: "100%",
     },
     colorPrimary: {

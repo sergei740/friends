@@ -72,7 +72,7 @@ export const UserCard = (props) => {
         <Fragment>
           {photo ? (
             <img
-              src={photo}
+              src={`/api/file/${photo}`}
               alt={photo}
               style={{
                 width: "100%",
@@ -100,7 +100,7 @@ export const UserCard = (props) => {
         <div className={styles.userCard}>
           <div className={styles.flexContainer}>
             <img
-              src={photo || `https://via.placeholder.com/65`}
+              src={photo ? `/api/file/${photo}` : `https://via.placeholder.com/65`}
               alt={name}
               className={styles.photo}
               onClick={handleClickOpen}

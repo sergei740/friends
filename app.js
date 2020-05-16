@@ -2,13 +2,15 @@ const express = require("express");
 const config = require("config");
 const mongoose = require("mongoose");
 const path = require("path");
-
+// const methodOverride = require("method-override");
 const app = express();
 
 app.use(express.json({ extended: true }));
 
-app.use("/api/users", require("./routes/users.routes"));
+// app.use(methodOverride("_method"));
 app.use("/api/auth", require("./routes/auth.routes"));
+app.use("/api/users", require("./routes/users.routes"));
+app.use("/api/file", require("./routes/file.routes"));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

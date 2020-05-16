@@ -17,11 +17,11 @@ export const UserInfoComponent = () => {
 
   const uploadPhoto = async (e) => {
     e.preventDefault();
-    const file = document.getElementById("file");
+    const file = document.getElementById("file").files;
     const formData = new FormData();
-    formData.append("file", file.files[0]);
+    formData.append("img", file[0]);
 
-    const data = await request("/api/users/userPhoto", "POST", formData, {
+    const data = await request("/api/file/userPhoto", "POST", formData, {
       Authorization: `Bearer ${token}`,
     });
 
@@ -29,10 +29,11 @@ export const UserInfoComponent = () => {
   };
 
   const deletePhoto = async () => {
-    const data = await request("/api/users/deleteUserPhoto", "GET", null, {
+    await request("/api/file/deleteUserPhoto", "DELETE", null, {
       Authorization: `Bearer ${token}`,
     });
-    setPhotoAuthUser(data.photo);
+
+    setPhotoAuthUser("");
   };
 
   const handleClickOpen = () => {
@@ -77,8 +78,8 @@ export const UserInfoComponent = () => {
           <Fragment>
             {userPhoto ? (
               <img
-                src={userPhoto}
-                alt={userPhoto}
+                src={`/api/file/${userPhoto}`}
+                alt={"pic"}
                 style={{
                   width: "100%",
                   overflow: "hidden",
@@ -126,7 +127,7 @@ export const UserInfoComponent = () => {
     <div className={styles.container}>
       <div className={styles.photoContainer} onClick={handleClickOpen}>
         <img
-          src={photoAuthUser || "https://via.placeholder.com/65"}
+          src={photoAuthUser ? `/api/file/${photoAuthUser}` : `https://via.placeholder.com/65`}
           className={styles.photoBlock}
           alt={authorizedUser.name}
         />
