@@ -1,10 +1,8 @@
 const { Router } = require("express");
-const path = require("path");
 const User = require("../models/User");
 const router = Router();
 const auth = require("../middleware/auth.middleware");
 const multer = require("multer");
-const fs = require("fs");
 const config = require("config");
 const GridFsStorage = require("multer-gridfs-storage");
 const crypto = require("crypto");
@@ -69,7 +67,7 @@ router.post("/userPhoto", upload.single("img"), auth, async (req, res) => {
   }
 });
 
-///
+/// api/file/:filename
 router.get("/:filename", (req, res) => {
   try {
     gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
