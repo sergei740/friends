@@ -25,7 +25,7 @@ conn.once("open", () => {
 });
 
 const storage = new GridFsStorage({
-  url: config.get("mongoUri"),
+  url: process.env.MONGODB_URI || config.get("mongoUri"),
   options: { useUnifiedTopology: true },
   file: (req, file) => {
     return new Promise((resolve, reject) => {
