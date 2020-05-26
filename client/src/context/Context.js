@@ -29,4 +29,8 @@ export const Context = createContext({
   friends: [],
   incomingFriendsRequests: [],
   outgoingFriendRequestsList: [],
+  getMessages: noop,
+  sendMessage: noop,
+  incomingMessages: {},
+  outgoingMessages: {},
 });

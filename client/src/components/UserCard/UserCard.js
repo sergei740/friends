@@ -5,6 +5,7 @@ import styles from "./user-card.module.css";
 import fadeTransition from "./transitions/fade.module.css";
 import _ from "lodash";
 import { Context } from "../../context/Context";
+import { SendMessageComponent } from "../SendMessageComponent/SendMessageComponent";
 
 export const UserCard = (props) => {
   const {
@@ -30,6 +31,7 @@ export const UserCard = (props) => {
 
   const [open, setOpen] = useState(false);
   const [animation, setAnimation] = useState(false);
+  const [messageComponent, setMessageComponent] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -111,7 +113,7 @@ export const UserCard = (props) => {
             {isIncomingRequest && !isFriend && (
               <div>
                 <button
-                  className="btn btn-outline-primary"
+                  className="btn btn-primary"
                   type="button"
                   style={{ marginRight: "10px" }}
                   disabled={loading}
@@ -120,7 +122,7 @@ export const UserCard = (props) => {
                   ACCEPT
                 </button>
                 <button
-                  className="btn btn-outline-danger"
+                  className="btn btn-danger"
                   type="button"
                   disabled={loading}
                   onClick={() => rejectFriendRequest(authorizedUserId, _id)}
@@ -131,7 +133,7 @@ export const UserCard = (props) => {
             )}
             {!isFriend && !isIncomingRequest && !isOutgoingRequest ? (
               <button
-                className="btn btn-outline-primary"
+                className="btn btn-primary"
                 type="button"
                 disabled={loading}
                 onClick={() => sendFriendRequest(authorizedUserId, _id)}
@@ -141,22 +143,37 @@ export const UserCard = (props) => {
             ) : null}
             {isFriend && (
               <div className={styles.flexContainer}>
-                <p className={styles.friend}>friend</p>
-                <button
-                  className="btn btn-outline-danger"
-                  type="button"
-                  disabled={loading}
-                  onClick={() => deleteFriend(authorizedUserId, _id)}
-                >
-                  REMOVE FRIEND
-                </button>
+                {!messageComponent ? (
+                  <Fragment>
+                    <button
+                      className="btn btn-success"
+                      type="button"
+                      onClick={() => {
+                        setMessageComponent(true);
+                      }}
+                    >
+                      MESSAGE
+                    </button>
+                    <p className={styles.friend}>friend</p>
+                    <button
+                      className="btn btn-danger"
+                      type="button"
+                      disabled={loading}
+                      onClick={() => deleteFriend(authorizedUserId, _id)}
+                    >
+                      REMOVE FRIEND
+                    </button>
+                  </Fragment>
+                ) : (
+                  <SendMessageComponent setMessageComponent={setMessageComponent} id={_id} />
+                )}
               </div>
             )}
             {isOutgoingRequest && !isFriend && (
               <div className={styles.flexContainer}>
                 <p className={styles.friend}>request has been sent</p>
                 <button
-                  className="btn btn-outline-danger"
+                  className="btn btn-danger"
                   type="button"
                   disabled={loading}
                   onClick={() => cancelFriendRequest(authorizedUserId, _id)}

@@ -11,6 +11,15 @@ import { withStyles } from "@material-ui/core/styles";
 export const NavBarComponent = () => {
   const { logOut, loading } = useContext(Context);
   const [animation, setAnimation] = useState(false);
+  const [humburgerMenu, setHumburgerMenu] = useState(styles.navBarLinks);
+
+  const toggleHumburgerMenu = (humburgerMenu, e) => {
+    if (humburgerMenu !== styles.navBarLinksShow) {
+      setHumburgerMenu(styles.navBarLinksShow);
+    } else {
+      setHumburgerMenu(styles.navBarLinks);
+    }
+  };
 
   const ColorLinearProgress = withStyles({
     root: {
@@ -42,22 +51,38 @@ export const NavBarComponent = () => {
     >
       <Fragment>
         <div className={styles.navBarContainer}>
-          <div>
-            <NavLink exact to="/users" activeClassName={styles.active}>
+          <div id="humburger" className={styles.humburger} onClick={() => toggleHumburgerMenu(humburgerMenu)}>
+            <div></div>
+          </div>
+          <div className={humburgerMenu} id="humburgerMenu">
+            <NavLink
+              exact
+              to="/users"
+              activeClassName={styles.active}
+              onClick={() => toggleHumburgerMenu(humburgerMenu)}
+            >
               USERS
             </NavLink>
-            <NavLink exact to="/friends" activeClassName={styles.active}>
+            <NavLink
+              exact
+              to="/friends"
+              activeClassName={styles.active}
+              onClick={() => toggleHumburgerMenu(humburgerMenu)}
+            >
               FRIENDS
+            </NavLink>
+            <NavLink
+              exact
+              to="/messages"
+              activeClassName={styles.active}
+              onClick={() => toggleHumburgerMenu(humburgerMenu)}
+            >
+              MESSAGES
             </NavLink>
           </div>
           <div className={styles.userInfoContainer}>
             <UserInfoComponent />
-            <button
-              name="registartion"
-              type="button"
-              className="btn btn-outline-danger"
-              onClick={logOut}
-            >
+            <button name="registartion" type="button" className="btn btn-danger" onClick={logOut}>
               LOG OUT
             </button>
           </div>

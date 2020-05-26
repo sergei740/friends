@@ -26,6 +26,8 @@ function App() {
   const [friends, setFriends] = useState([]);
   const [incomingFriendsRequests, setIncomingFriendsRequests] = useState([]);
   const [outgoingFriendRequestsList, setOutgoingFriendRequestsList] = useState([]);
+  const [incomingMessages, setIncomingMessages] = useState({});
+  const [outgoingMessages, setOutgoingMessages] = useState({});
 
   const changeComponentName = (e) => {
     setSignInForm({ email: "", password: "" });
@@ -151,6 +153,33 @@ function App() {
     getFriends(token);
   };
 
+  const getMessages = useCallback(
+    async (token) => {
+      const data = await request("api/message", "GET", null, {
+        Authorization: `Bearer ${token}`,
+      });
+      setIncomingMessages(data.incomingMessages);
+      setOutgoingMessages(data.outgoingMessages);
+      console.log(data);
+    },
+    [request]
+  );
+
+  const sendMessage = async (message, friendId) => {
+    const data = await request(
+      "api/message/sendMessage",
+      "POST",
+      {
+        message,
+        friendId,
+      },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    console.log(data.message);
+  };
+
   useEffect(() => {}, [token]);
 
   return (
@@ -180,6 +209,10 @@ function App() {
         friends,
         incomingFriendsRequests,
         outgoingFriendRequestsList,
+        getMessages,
+        sendMessage,
+        incomingMessages,
+        outgoingMessages,
       }}
     >
       <Router>{routes}</Router>

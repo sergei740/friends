@@ -77,7 +77,7 @@ export const RegistrationFormComponent = () => {
             unmountOnExit
           >
             <div className={styles.buttonContainer}>
-              <button className="btn btn-outline-primary" type="submit" disabled={loading}>
+              <button className="btn btn-primary" type="submit" disabled={loading}>
                 REGISTRATION
               </button>
               {loading && (
@@ -86,7 +86,7 @@ export const RegistrationFormComponent = () => {
                 </div>
               )}
               <button
-                className="btn btn-outline-danger"
+                className="btn btn-danger"
                 type="button"
                 disabled={loading}
                 onClick={changeComponentName}

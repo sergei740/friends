@@ -8,6 +8,8 @@ const schema = new Schema({
   friendList: { type: Array },
   incomingFriendRequestsList: { type: Array },
   outgoingFriendRequestsList: { type: Array },
+  incomingMessages: { type: Array },
+  outgoingMessages: { type: Array },
 });
 
 module.exports = model("User", schema);

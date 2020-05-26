@@ -63,7 +63,7 @@ export const SignInFormComponent = () => {
             unmountOnExit
           >
             <div className={styles.buttonContainer}>
-              <button className="btn btn-outline-primary" type="submit">
+              <button className="btn btn-primary" type="submit">
                 SIGN IN
               </button>
               {loading && (
@@ -72,7 +72,7 @@ export const SignInFormComponent = () => {
                 </div>
               )}
               <button
-                className="btn btn-outline-danger"
+                className="btn btn-danger"
                 type="button"
                 onClick={changeComponentName}
               >

@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  color: #ffffff;
+  font-size: 20px;
+  border: 1px solid transparent;
+  padding: 10px;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 0px 2px 0px rgba(255, 255, 255, 1);
+}
+
+.container:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 2px 0px rgba(0, 123, 255, 1);
+}
+
+.photo {
+  width: 65px;
+  height: 65px;
+  border-radius: 50px;
+  margin-right: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.name {
+  font-size: 24px;
+}
+
+.message {
+  font-size: 22px;
+  margin: 0 5px;
+}
+
+.date {
+  font-size: 14px;
+  color: #6b6a6a;
+}

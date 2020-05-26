@@ -40,7 +40,7 @@ export const StartPageComponent = () => {
             <button
               name="singin"
               type="button"
-              className="btn btn-outline-primary"
+              className="btn btn-primary"
               onClick={changeComponentName}
             >
               SIGN IN
@@ -57,7 +57,7 @@ export const StartPageComponent = () => {
             <button
               name="registartion"
               type="button"
-              className="btn btn-outline-danger"
+              className="btn btn-danger"
               onClick={changeComponentName}
             >
               REGISTRATION

@@ -1,0 +1,22 @@
+.container {
+  height: calc(100vh - 60px);
+  margin-top: 85px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 30px;
+  overflow-y: scroll;
+}
+
+.headerText {
+  color: #ffffff;
+  font-size: 24px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    padding: 10px 10px;
+  }
+}

@@ -23,3 +23,11 @@
 .inputStyle:focus::placeholder {
   opacity: 0;
 }
+
+/*Media Queries*/
+@media only screen and (max-width: 800px) {
+  .inputStyle {
+    width: 150px;
+    font-size: 16px;
+  }
+}

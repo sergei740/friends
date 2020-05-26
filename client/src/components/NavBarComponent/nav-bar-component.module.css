@@ -68,3 +68,65 @@
   display: flex;
   align-items: center;
 }
+
+.humburger {
+  display: none;
+}
+
+@media only screen and (max-width: 800px) {
+  .navBarLinks {
+    display: none;
+  }
+
+  .navBarLinksShow {
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 86px;
+    background-color: #1d1d1f;
+    width: 100%;
+    justify-content: center;
+    padding: 20px 0;
+  }
+
+  .humburger {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    width: 20px;
+    height: 15px;
+    background: transparent;
+  }
+
+  .humburger:hover {
+    cursor: pointer;
+  }
+
+  .humburger > div {
+    background: #ffffff;
+    position: absolute;
+    height: 1px;
+    width: 20px;
+    top: 7px;
+  }
+
+
+  .humburger:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 1px;
+    width: 20px;
+    background: #ffffff;
+  }
+
+  .humburger:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    height: 1px;
+    width: 20px;
+    background: #ffffff;
+    color: #ffffff;
+  }
+}

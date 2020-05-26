@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.container > input {
+  margin: 0;
+}
+
+/*Media Queries*/
+@media only screen and (max-width: 800px) {
+  .container > button {
+    font-size: 12px;
+    padding: 0.275rem 0.55rem;
+  }
+}
