@@ -76,9 +76,8 @@
     margin: 0 5px;
   }
 
-  .flexContainer > button, .buttonsContainer > button {
+  .userCard button {
     font-size: 12px;
     padding: 0.145rem 0.35rem;
   }
 }
-
