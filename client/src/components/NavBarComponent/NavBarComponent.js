@@ -13,13 +13,25 @@ export const NavBarComponent = () => {
   const [animation, setAnimation] = useState(false);
   const [humburgerMenu, setHumburgerMenu] = useState(styles.navBarLinks);
 
-  const toggleHumburgerMenu = (humburgerMenu, e) => {
+  const toggleHumburgerMenu = (humburgerMenu) => {
     if (humburgerMenu !== styles.navBarLinksShow) {
       setHumburgerMenu(styles.navBarLinksShow);
     } else {
       setHumburgerMenu(styles.navBarLinks);
     }
   };
+
+  // document.addEventListener("click", (e) => {
+  //   const targetId = e.target.id;
+  //   if (
+  //     (targetId === "humburger" || targetId === "humburgerMenu") &&
+  //     humburgerMenu !== styles.navBarLinksShow
+  //   ) {
+  //     setHumburgerMenu(styles.navBarLinksShow);
+  //   } else {
+  //     setHumburgerMenu(styles.navBarLinks);
+  //   }
+  // });
 
   const ColorLinearProgress = withStyles({
     root: {
@@ -51,7 +63,11 @@ export const NavBarComponent = () => {
     >
       <Fragment>
         <div className={styles.navBarContainer}>
-          <div id="humburger" className={styles.humburger} onClick={() => toggleHumburgerMenu(humburgerMenu)}>
+          <div
+            id="humburger"
+            className={styles.humburger}
+            onClick={() => toggleHumburgerMenu(humburgerMenu)}
+          >
             <div></div>
           </div>
           <div className={humburgerMenu} id="humburgerMenu">

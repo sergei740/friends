@@ -17,15 +17,16 @@ export const IncomingMessageCard = (props) => {
             alt={name}
           />
           <div style={{ display: "flex", alignItems: "flex-end" }}>
-            <div className={styles.name}>{_.capitalize(name)}:</div>
-            <div className={styles.message}>{message}</div>
-            <div className={styles.date}>{date}</div>
-          </div>
+              <div className={styles.name}>{_.capitalize(name)}:</div>
+              <div className={styles.message}>{message}</div>
+             
+            </div>
         </div>
         {messageComponent ? (
           <SendMessageComponent setMessageComponent={setMessageComponent} id={id} />
         ) : (
-          <div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+               <div className={styles.date}>{date}</div>
             <button
               className="btn btn-success"
               onClick={() => {

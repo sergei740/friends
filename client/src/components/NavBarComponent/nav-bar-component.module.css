@@ -73,7 +73,21 @@
   display: none;
 }
 
+/*Media Queries*/
 @media only screen and (max-width: 800px) {
+  .navBarContainer {
+    padding: 10px;
+  }
+
+  .navBarContainer a:before {
+    top: 20px;
+  }
+
+  .navBarContainer  button {
+    font-size: 14px;
+    padding: 0.175rem 0.55rem;
+  }
+
   .navBarLinks {
     display: none;
   }
@@ -82,11 +96,12 @@
     display: flex;
     position: absolute;
     left: 0;
-    top: 86px;
-    background-color: #1d1d1f;
+    top: 56px;
+    background-color: rgba(29, 29, 31, 0.84);
     width: 100%;
     justify-content: center;
-    padding: 20px 0;
+    font-size: 18px;
+    padding: 15px 0;
   }
 
   .humburger {
@@ -109,7 +124,6 @@
     width: 20px;
     top: 7px;
   }
-
 
   .humburger:before {
     content: "";

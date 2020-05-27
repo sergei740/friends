@@ -83,7 +83,9 @@ export const UserCard = (props) => {
               }}
             />
           ) : (
-            <h1 style={{ textTransform: "uppercase", color: "#ffffff" }}>User photo not found</h1>
+            <h1 style={{ textTransform: "uppercase", color: "#ffffff", textAlign: "center" }}>
+              User photo not found
+            </h1>
           )}
         </Fragment>
       </Dialog>
@@ -171,7 +173,7 @@ export const UserCard = (props) => {
             )}
             {isOutgoingRequest && !isFriend && (
               <div className={styles.flexContainer}>
-                <p className={styles.friend}>request has been sent</p>
+                <p className={styles.friend}>request was sent</p>
                 <button
                   className="btn btn-danger"
                   type="button"

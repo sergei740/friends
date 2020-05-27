@@ -160,7 +160,6 @@ function App() {
       });
       setIncomingMessages(data.incomingMessages);
       setOutgoingMessages(data.outgoingMessages);
-      console.log(data);
     },
     [request]
   );

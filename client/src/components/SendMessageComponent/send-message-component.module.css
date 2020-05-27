@@ -6,6 +6,11 @@
 
 .container > input {
   margin: 0;
+  width: 250px;
+}
+
+.container button {
+  margin: 0 0 0 10px;
 }
 
 /*Media Queries*/
@@ -13,5 +18,12 @@
   .container > button {
     font-size: 12px;
     padding: 0.275rem 0.55rem;
+    margin: 0 0 0 5px;
+  }
+
+  .container > input {
+    margin: 0;
+    width: 100px;
+    font-size: 12px;
   }
 }

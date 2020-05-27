@@ -53,27 +53,32 @@
 /*Media Queries*/
 @media only screen and (max-width: 800px) {
   .userCard {
-    padding: 10px;
+    padding: 5px;
+    margin: 0px auto 15px;
+  }
+
+  .buttonsContainer {
+    margin: 0;
   }
 
   .photo {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
   }
 
   .name {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .friend {
     font-size: 12px;
-    margin: 0 10px;
+    margin: 0 5px;
   }
 
   .flexContainer > button, .buttonsContainer > button {
     font-size: 12px;
-    padding: 0.275rem 0.55rem;
+    padding: 0.145rem 0.35rem;
   }
 }
 

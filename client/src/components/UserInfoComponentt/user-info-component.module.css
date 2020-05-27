@@ -50,3 +50,11 @@
   font-size: 16px;
   font-weight: normal;
 }
+
+/*Media Queries*/
+@media only screen and (max-width: 800px) {
+  .photoBlock {
+    width: 35px;
+    height: 35px;
+  }
+}

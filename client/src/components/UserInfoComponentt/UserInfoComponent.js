@@ -83,7 +83,6 @@ export const UserInfoComponent = () => {
                 style={{
                   width: "100%",
                   overflow: "hidden",
-                  height: "100vh",
                   objectFit: "scale-down",
                 }}
               />

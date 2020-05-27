@@ -12,17 +12,15 @@ export const SendMessageComponent = (props) => {
     setInputValue(e.target.value);
   };
 
+  const message = async () => {
+    await sendMessage(inputValue, id);
+    setInputValue("");
+  };
+
   return (
     <div className={styles.container}>
       <TextField value={inputValue} placeholder="Type your message" onChange={inputHandler} />
-      <button
-        className="btn btn-primary"
-        type="button"
-        disabled={!inputValue}
-        onClick={() => {
-          sendMessage(inputValue, id);
-        }}
-      >
+      <button className="btn btn-primary" type="button" disabled={!inputValue} onClick={message}>
         SEND
       </button>
       <button

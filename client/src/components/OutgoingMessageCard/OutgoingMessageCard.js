@@ -3,7 +3,7 @@ import styles from "./outgoing-message-card.module.css";
 import _ from "lodash";
 
 export const OutgoingMessageCard = (props) => {
-  const { id, name, photo, message, date } = props.user;
+  const { name, photo, message, date } = props.user;
   return (
     <li>
       <div className={styles.container}>
