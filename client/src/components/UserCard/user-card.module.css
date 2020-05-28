@@ -29,6 +29,7 @@
 .photo {
   width: 65px;
   height: 65px;
+  object-fit: cover;
   border-radius: 50px;
   margin-right: 20px;
   transition: all 0.3s ease-in-out;

@@ -20,7 +20,6 @@ router.post("/sendMessage", auth, async (req, res) => {
         {
           id: friendId,
           name: friend.name,
-          photo: friend.photo,
           date: date,
           message: message,
         },
@@ -33,7 +32,6 @@ router.post("/sendMessage", auth, async (req, res) => {
         {
           id: senderId,
           name: sender.name,
-          photo: sender.photo,
           date: date,
           message: message,
         },

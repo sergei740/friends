@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./outgoing-message-card.module.css";
 import _ from "lodash";
+import { Context } from "../../context/Context";
 
 export const OutgoingMessageCard = (props) => {
-  const { name, photo, message, date } = props.user;
+  const { id, name, message, date } = props.user;
+  const { users } = useContext(Context);
+
+  const photo = users.find((user) => user._id === id).photo;
+
   return (
     <li>
       <div className={styles.container}>
