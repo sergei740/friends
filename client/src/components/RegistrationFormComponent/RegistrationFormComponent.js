@@ -18,6 +18,11 @@ export const RegistrationFormComponent = () => {
   } = useContext(Context);
 
   const [animation, setAnimation] = useState(false);
+  const registrationFormFieldsIsNotEmpty =
+    registrationForm.name &&
+    registrationForm.email &&
+    registrationForm.login &&
+    registrationForm.password;
 
   useEffect(() => {
     setAnimation(true);
@@ -77,7 +82,11 @@ export const RegistrationFormComponent = () => {
             unmountOnExit
           >
             <div className={styles.buttonContainer}>
-              <button className="btn btn-primary" type="submit" disabled={loading}>
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={loading || !registrationFormFieldsIsNotEmpty}
+              >
                 REGISTRATION
               </button>
               {loading && (

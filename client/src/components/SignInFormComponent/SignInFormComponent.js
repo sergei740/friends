@@ -18,6 +18,7 @@ export const SignInFormComponent = () => {
   } = useContext(Context);
 
   const [animation, setAnimation] = useState(false);
+  const signInFormFieldsIsNotEmpty = signInForm.email && signInForm.password;
 
   useEffect(() => {
     setAnimation(true);
@@ -63,7 +64,11 @@ export const SignInFormComponent = () => {
             unmountOnExit
           >
             <div className={styles.buttonContainer}>
-              <button className="btn btn-primary" type="submit">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={!signInFormFieldsIsNotEmpty}
+              >
                 SIGN IN
               </button>
               {loading && (
@@ -71,11 +76,7 @@ export const SignInFormComponent = () => {
                   <span className="sr-only">Loading...</span>
                 </div>
               )}
-              <button
-                className="btn btn-danger"
-                type="button"
-                onClick={changeComponentName}
-              >
+              <button className="btn btn-danger" type="button" onClick={changeComponentName}>
                 GO BACK
               </button>
             </div>
