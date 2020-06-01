@@ -12,7 +12,7 @@ router.post(
   [
     check("name", "Name must contain more than 2 chars").isLength({ min: 2 }),
     check("email", "Incorrect email").isEmail(),
-    check("login").isLength({ min: 6 }),
+    check("login", "Minimal login length 6 chars").isLength({ min: 6 }),
     check("password", "Minimal passsword length 6 chars").isLength({ min: 6 }),
   ],
   async (req, res) => {
@@ -20,9 +20,7 @@ router.post(
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        return res
-          .status(400)
-          .json({ error: errors.array(), message: "Incorrect data during registration" });
+        return res.status(400).json({ error: errors.array(), message: errors.array()[0].msg });
       }
 
       const { name, email, login, password } = req.body;
@@ -67,7 +65,7 @@ router.post(
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        return res.status(400).json({ error: errors.array(), message: "Incorrect login details" });
+        return res.status(400).json({ error: errors.array(), message: errors.array()[0].msg });
       }
 
       const { email, password } = req.body;

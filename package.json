@@ -25,7 +25,8 @@
     "moment": "^2.26.0",
     "mongoose": "^5.9.10",
     "multer": "^1.4.2",
-    "multer-gridfs-storage": "^4.1.0"
+    "multer-gridfs-storage": "^4.1.0",
+    "pusher": "^3.0.1"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
